@@ -8,16 +8,20 @@ chute_str = input("Digite o seu numero: ")
 
 chute = int(chute_str)
 
-print("Voce difitou", chute)
+print("Voce digitou", chute)
 
-if (numero_secreto == chute):
+acertou = chute == numero_secreto
+maior = chute > numero_secreto
+menor = chute < numero_secreto
+
+
+if (acertou):
     print("Voce acertou o numero !!")
 else:
-    if (chute < numero_secreto):
-        print("Numero menor que o resultado")
-    else:
-        print("Numero maior que o resultado")
+    if (maior):
+        print("Você errou ! seu numero maior que o numero secreto")
+    elif (menor):
+        print("Você errou ! seu numero menor que o numero secreto")
 
-print("\n")
 print("**********************************")
 print("Fim de jogo")
