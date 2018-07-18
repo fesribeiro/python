@@ -34,3 +34,4 @@ while (rodada <= total_tentativas):
 
 print("**********************************")
 print("Fim de jogo")
+print("**********************************")
