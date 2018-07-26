@@ -4,12 +4,16 @@ def jogar():
     print("*******    Jogo da forca       *****")
     print("************************************")
     print("************************************")
-    print("************************************")
+
 
     palavra_secreta = "banana"
 
+    letras_acertadas = ["_", "_", "_", "_", "_", "_"]
+
     enforcou = False
     acertou = False
+
+    print("\n", letras_acertadas, "\n")
 
     #enquato(true)
     while(not enforcou and not acertou):
@@ -22,12 +26,12 @@ def jogar():
 
         for letra in palavra_secreta:
             if (chute.upper() == letra.upper()):
-                print("Encontrei a letra {} na posição {}".format(letra, index))
+                letras_acertadas[index] = letra
 
             index = index + 1
 
 
-        print("Jogando...")
+        print("\n", letras_acertadas, "\n")
 
 
     print("Fim do jogo")
