@@ -1,9 +1,5 @@
-<html>
-<head>
-
-</head>
-
-<body>
+{% extends "template.html" %}
+{% block conteudo %}
     <form action="/criar" method="post">
         <fieldset>
           <div class="form-group">
@@ -21,7 +17,4 @@
           <button type="submit" class="btn btn-primary btn-salvar">Salvar</button>
         </fieldset>
       </form>
-
-</body>
-
-</html>
+{% endblock %}
