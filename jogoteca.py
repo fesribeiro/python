@@ -9,6 +9,18 @@ class Jogo:
         self.categoria = categoria
         self.console = console
 
+class Usuario:
+    def __init__(self, id, nome, senha):
+        self.id = id
+        self.nome = nome
+        self.senha = senha
+
+
+
+Usuario1 = Usuario('felipe', 'felipe', '123456')
+Usuario2 = Usuario('victor', 'victor', '654321')
+
+usuarios = {Usuario1.id:Usuario1, Usuario2.id:Usuario2}
 
 Jogo1 = Jogo('Super Mario', 'Ação', 'Nitendo')
 Jogo2 = Jogo('GTA', 'Ação', 'Xbox')
@@ -38,13 +50,15 @@ def criar():
 
 @app.route('/autenticar', methods=['POST',])
 def autenticar():
-    if 'mestra' == request.form['senha']:
-        session['usuario_logado'] = request.form['usuario']
-        flash(request.form['usuario'] + ' logou com sucesso !')
-        proxima_pagina = request.form['proxima']
-        return redirect(proxima_pagina)
+    if request.form['usuario'] in usuarios:
+        usuario = usuarios[request.form['usuario']]
+        if usuario.senha == request.form['senha']:
+            session['usuario_logado'] = usuario.id
+            flash(usuario.nome + ' logou com sucesso')
+            proxima_pagina = request.form['proxima']
+            return redirect(proxima_pagina)
     else:
-        flash('Usuário ' + request.form['usuario'] + ' não logou !')
+        flash('Não logado, tente novamante.')
         return redirect(url_for('login'))
 
 @app.route('/login')
@@ -60,5 +74,6 @@ def logout():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-  app.run(host='192.168.40.60', port=8000, debug=True)
+
+    app.run(host='192.168.40.60', port=8000, debug=True)
  
