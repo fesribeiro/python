@@ -1,12 +1,17 @@
-from flask import Flask, render_template, request, redirect, session, flash, url_for
+from flask import Flask, render_template, request, redirect, session, flash, url_for, send_from_directory
 from dao import JogoDao, UsuarioDao
 from models import Jogo, Usuario
 import pymysql
 import os
-
 app = Flask(__name__)
 app.secret_key = 'Felipe'
 app.config['UPLOAD_PATH'] = os.path.dirname(os.path.abspath(__file__)) + '/upload'
+#host = "0.0.0.0"
+#user = "root"
+#passwd = ""
+#db = 'jogoteca'
+#port = 3306
+
 db = pymysql.connect(user='root',passwd='', host='localhost', port=3306)
 
 jogo_dao = JogoDao(db)
@@ -37,7 +42,7 @@ def editar(id):
     if 'usuario_logado' not in session or session['usuario_logado'] == None:
         return redirect( url_for('login', proxima=url_for('editar')))
     jogo = jogo_dao.busca_por_id(id)
-    return render_template('editar.html', titulo='Alterar jogo', jogo=jogo)
+    return render_template('editar.html', titulo='Alterar jogo', jogo=jogo,capa_jogo = f'capa{id}.jpg')
 
 @app.route('/deletar/<int:id>')
 def deletar(id):
@@ -53,9 +58,9 @@ def criar():
     console = request. form['console']
     jogo = Jogo(nome, categoria, console)
     jogo = jogo_dao.salvar(jogo)
-    arquivo = request.files['arquivo']
     upload_path = app.config['UPLOAD_PATH']
-    arquivo.save('upload/' + arquivo.filename)
+    arquivo = request.files['arquivo']
+    arquivo.save(f'{upload_path}/capa{jogo.id}.jpg')
     return redirect(url_for('index'))
 
 @app.route('/atualizar', methods=['POST',])
@@ -91,7 +96,13 @@ def logout():
     flash('Nenhum usuário logado!')
     return redirect(url_for('login'))
 
+@app.route('/imagem/<nome_arquivo>')
+def imagem(nome_arquivo):
+    return send_from_directory('upload', nome_arquivo)
+
+
+
 
 if __name__ == '__main__':
-  app.run(host='192.168.1.3', port=8000, debug=True)
+  app.run(host='localhost', port=8000, debug=True)
  
